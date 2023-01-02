@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Test code converting</title>
+</head>
+
+<body>
+	<div>
+		<h1>Simple EUC-KR converting table with pure javascript</h1>
+		<span>Original Character code from</span>
+		<a href="http://unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/KSC/HANGUL.TXT">HANGUL.TXT</a>
+		<p>Sometimes you need to convert old euc-kr pages to unicode or utf8 just within browser. This is just simple
+			converter that you can use.</p>
+
+		<button onclick="onClickTest('./euckr1.txt')">Test EUCKR1</button>
+		<button onclick="onClickTest('./euckr2.txt')">Test EUCKR2</button>
+		<br>
+		<a href="./euckr1.txt">euckr1.txt</a>
+		<a href="./euckr2.txt">euckr2.txt</a>
+	</div>
+	<br><br>
+	<div style="display: flex;">
+		<div style="flex: 3">
+			<h2 title="URL with CORS allowed">URL</h2>
+			<input id="url" type="text" style="width: 80%" placeholder="http://xxx.xxx/euckr.txt" onkeyup="if(13 === event.keyCode) onClickSubmit();">
+			<button onclick="onClickSubmit()">Submit</button>
+		</div>
+
+		<div style="flex: 1">
+		</div>
+
+		<div style="flex: 3">
+			<h2>File</h2>
+			<input id="inputFile" type="file" onchange="onChangeFile()">
+		</div>
+	</div>
+
+	<div>
+		<h2>Converted Result, Original vs Converted</h2>
+		<div style="display: flex">
+			<textarea id="original" style="flex: 10; height: 50vh"></textarea>
+			<span style="flex: 1"></span>
+			<textarea id="result" style="flex: 10; height: 50vh"></textarea>
+		</div>
+	</div>
+
+	<script src="../converteuckr.js"></script>
+	<script>
+
+		function onClickTest(url) {
+			document.getElementById('url').value = url;
+			onClickSubmit();
+		}
+
+		async function onClickSubmit() {
+			const url = document.getElementById('url').value;
+			if (4 > url.length) {
+				alert('Invalid URL');
+				return;
+			}
+
+			requestFromURL(url);
+		}
+
+		function execConvert(ab, org) {
+			console.time('convert');
+			const str = ConvertEUCKR.ToStr(ab);
+			console.timeEnd('convert');
+
+			document.getElementById('original').value = org;
+			document.getElementById('result').value = str;
+		}
+
+		async function onChangeFile() {
+			const files = document.getElementById('inputFile').files;
+			const file = files[0];
+			const ab = await file.arrayBuffer();
+			const text = await file.text();
+
+			console.log(`file read, ${file.size} bytes`);
+
+			await execConvert(ab, text);
+		}
+
+		async function requestFromURL(url) {
+			const r = await fetch(url, { mode: 'no-cors' });
+			const ab = await r.clone().arrayBuffer();
+			const text = await r.text();
+
+			console.log(`File fetched, ${ab.byteLength} bytes`);
+
+			await execConvert(ab, text);
+		}
+	</script>
+</body>
+
+
+</html>

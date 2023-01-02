@@ -1,0 +1,23 @@
+가GA
+나NA
+다DA
+라LA
+마MA
+바BA
+사SA
+아A
+자JA
+차CHA
+카KA
+타TA
+파PA
+하HA
+
+Testing texts written in Windows notepad with ANSI encoding
+B0A1 GA
+B3AA NA
+...
+C7CF HA
+
+Testing numbers
+1234567890
