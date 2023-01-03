@@ -22,7 +22,10 @@ ConvertEUCKR = (() => {
 					result[resultIndex++] = String.fromCharCode(converted);
 					i++;
 				} else {
-					result[resultIndex++] = String.fromCharCode(v);
+					// result[resultIndex++] = String.fromCharCode(v);
+					console.log(`Unknown char code ${kr}`);
+					result[resultIndex++] = '_';
+					i++; // ignore 1 more byte
 				}
 			} else {
 				result[resultIndex++] = String.fromCharCode(v);
