@@ -14,7 +14,7 @@ ConvertEUCKR = (() => {
 
 		for (let i = 0; i < len; ++i) {
 			const v = view.getUint8(i);
-			if (v > 0x81) {
+			if (v >= 0x81) {
 				const kr = view.getUint16(i);
 				const converted = EUCKR_TABLE[kr];
 
@@ -42,7 +42,7 @@ ConvertEUCKR = (() => {
 
 		for (let i = 0; i < len; ++i) {
 			const v = view.getUint8(i);
-			if (v > 0x81) {
+			if (v >= 0x81) {
 				const kr = view.getUint16(i);
 				const converted = EUCKR_TABLE[kr];
 
